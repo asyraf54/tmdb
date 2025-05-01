@@ -6,7 +6,7 @@
 
 
     <application
-        android:name=".MainActivity"
+        android:name=".TMDBApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -17,16 +17,27 @@
         android:theme="@style/Theme.TMDB"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.home.ui.HomeActivity"
+            android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.TMDB">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="detail"
+                    android:scheme="myapp" />
+            </intent-filter>
         </activity>
+
+
     </application>
 
 </manifest>

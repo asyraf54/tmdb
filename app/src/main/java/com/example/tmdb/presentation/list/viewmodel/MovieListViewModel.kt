@@ -1,6 +1,6 @@
-package com.example.tmdb.presentation.home.viewmodel
+package com.example.tmdb.presentation.list.viewmodel
 
-import android.util.Log
+import com.example.tmdb.core.constant.MovieType
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tmdb.core.base.Either
@@ -14,22 +14,22 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class MovieListViewModel @Inject constructor(
     private val movieUseCase: MovieUsecase
 ) : ViewModel() {
-    private val _homeState = MutableStateFlow(HomeState())
-    val state: StateFlow<HomeState> = _homeState
+    private val _state = MutableStateFlow(MovieListState())
+    val state: StateFlow<MovieListState> = _state
 
 
-    fun getMovies(type: String, page: Int = 1) {
+    fun getMovies(movieType: MovieType, page: Int = 1) {
         viewModelScope.launch {
-            _homeState.value = _homeState.value.copy(
-                moviePopularState = _homeState.value.moviePopularState.copy(
+            _state.value = _state.value.copy(
+                moviesState = _state.value.moviesState.copy(
                     requestState = RequestState.loading,
                 )
             )
 
-            val result = movieUseCase.getMovies(type, page)
+            val result = movieUseCase.getMovies(movieType.paramKey(), page)
             when (result) {
                 is Either.Left -> {
                     val failure = result.value
@@ -39,8 +39,8 @@ class HomeViewModel @Inject constructor(
                         else -> RequestState.error
                     }
 
-                    _homeState.value = _homeState.value.copy(
-                        moviePopularState = _homeState.value.moviePopularState.copy(
+                    _state.value = _state.value.copy(
+                        moviesState = _state.value.moviesState.copy(
                             requestState = requestState,
                             message = failure.message
                         )
@@ -48,10 +48,10 @@ class HomeViewModel @Inject constructor(
                 }
 
                 is Either.Right -> {
-                    _homeState.value = _homeState.value.copy(
-                        moviesPopularPage = _homeState.value.moviesPopularPage + 1,
-                        moviesPopular = result.value,
-                        moviePopularState = _homeState.value.moviePopularState.copy(
+                    _state.value = _state.value.copy(
+                        moviePage = _state.value.moviePage + 1,
+                        movies = result.value,
+                        moviesState = _state.value.moviesState.copy(
                             requestState = RequestState.success,
                         )
                     )
@@ -60,26 +60,24 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getNextMovies(type: String) {
-        Log.d("AAA","A${_homeState.value.moviesPopularPage}")
+    fun getNextMovies(movieType: MovieType) {
         viewModelScope.launch {
-            _homeState.value = _homeState.value.copy(
-                movieNextPopularState = _homeState.value.movieNextPopularState.copy(
+            _state.value = _state.value.copy(
+                moviesNextState = _state.value.moviesNextState.copy(
                     requestState = RequestState.loading,
                 )
             )
-            val result = movieUseCase.getMovies(type, _homeState.value.moviesPopularPage)
+            val result = movieUseCase.getMovies(movieType.paramKey(), _state.value.moviePage)
             when (result) {
                 is Either.Left -> {
                     val failure = result.value
-                    Log.d("AAA",failure.message)
                     val requestState = when (failure) {
                         is Failure.NetworkFailure -> RequestState.noNetwork
                         else -> RequestState.error
                     }
 
-                    _homeState.value = _homeState.value.copy(
-                        movieNextPopularState = _homeState.value.movieNextPopularState.copy(
+                    _state.value = _state.value.copy(
+                        moviesNextState = _state.value.moviesNextState.copy(
                             requestState = requestState,
                             message = failure.message
                         )
@@ -87,11 +85,10 @@ class HomeViewModel @Inject constructor(
                 }
 
                 is Either.Right -> {
-                    Log.d("AAA","success")
-                    _homeState.value = _homeState.value.copy(
-                        moviesPopularPage = _homeState.value.moviesPopularPage + 1,
-                        moviesPopular =  _homeState.value.moviesPopular.plus(result.value),
-                        movieNextPopularState = _homeState.value.movieNextPopularState.copy(
+                    _state.value = _state.value.copy(
+                        moviePage = _state.value.moviePage + 1,
+                        movies =  _state.value.movies.plus(result.value),
+                        moviesNextState = _state.value.moviesNextState.copy(
                             requestState = RequestState.success,
                         )
                     )
@@ -99,5 +96,4 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
-
 }

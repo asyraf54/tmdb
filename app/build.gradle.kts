@@ -81,8 +81,12 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // ====== Tambahan Baru ======
+    // Navigation Compose
+    implementation(libs.compose.navigation)
+
 
     // Hilt
+    implementation(libs.hilt.navigation)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
