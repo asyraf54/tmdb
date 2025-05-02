@@ -13,15 +13,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import com.example.tmdb.domain.entity.Movie
 
 @Composable
 fun MovieCard(movie: Movie) {
-    Column(
-        modifier = Modifier
-            .padding(4.dp)
-            .fillMaxWidth()
-    ) {
+    Column {
         AsyncImageBase(
             imageUrl = "https://image.tmdb.org/t/p/original${movie.posterPath}",
             contentDescription = movie.title,
@@ -34,7 +31,9 @@ fun MovieCard(movie: Movie) {
         Text(
             text = movie.title,
             style = MaterialTheme.typography.bodySmall,
-            maxLines = 1
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier.width(128.dp)
         )
     }
 }

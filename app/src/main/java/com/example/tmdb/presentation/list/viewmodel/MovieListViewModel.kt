@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MovieListViewModel @Inject constructor(
+open class MovieListViewModel @Inject constructor(
     private val movieUseCase: MovieUsecase
 ) : ViewModel() {
     private val _state = MutableStateFlow(MovieListState())
@@ -97,3 +97,24 @@ class MovieListViewModel @Inject constructor(
         }
     }
 }
+
+@HiltViewModel
+class PopularMovieViewModel @Inject constructor(
+    private val movieUseCase: MovieUsecase
+) : MovieListViewModel(movieUseCase)
+
+@HiltViewModel
+class TopRatedMovieViewModel @Inject constructor(
+    private val movieUseCase: MovieUsecase
+) : MovieListViewModel(movieUseCase)
+
+@HiltViewModel
+class NowPlayingViewModel @Inject constructor(
+    private val movieUseCase: MovieUsecase
+) : MovieListViewModel(movieUseCase)
+
+@HiltViewModel
+class UpcomingViewModel @Inject constructor(
+    private val movieUseCase: MovieUsecase
+) : MovieListViewModel(movieUseCase)
+
