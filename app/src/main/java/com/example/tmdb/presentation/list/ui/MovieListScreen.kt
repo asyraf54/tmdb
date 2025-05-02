@@ -16,6 +16,7 @@ import androidx.navigation.NavController
 import com.example.tmdb.core.constant.MovieType
 import com.example.tmdb.core.constant.RequestState
 import com.example.tmdb.core.widgets.MovieCard
+import com.example.tmdb.core.widgets.TopAppBarBase
 import com.example.tmdb.presentation.list.viewmodel.MovieListViewModel
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -37,26 +38,7 @@ fun MovieListScreen(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                navigationIcon = {
-                    // Tampilkan ikon back jika memungkinkan
-                    if (navController.previousBackStackEntry != null) {
-                        IconButton(onClick = { navController.popBackStack() }) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back"
-                            )
-                        }
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                    titleContentColor = MaterialTheme.colorScheme.onSurface,
-                ),
-                title = {
-                    Text("Movie ${movieType.displayName()}")
-                }
-            )
+            TopAppBarBase(navController= navController, title= "Movie ${movieType.displayName()}")
         },
     ) { padding ->
         Box(modifier = Modifier.padding(padding)){

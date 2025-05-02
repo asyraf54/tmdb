@@ -16,6 +16,7 @@ import com.example.tmdb.core.constant.MovieType
 import com.example.tmdb.core.constant.RequestState
 import com.example.tmdb.core.navigation.Screen
 import com.example.tmdb.core.widgets.MovieCard
+import com.example.tmdb.core.widgets.TopAppBarBase
 import com.example.tmdb.presentation.list.viewmodel.MovieListViewModel
 import com.example.tmdb.presentation.list.viewmodel.NowPlayingViewModel
 import com.example.tmdb.presentation.list.viewmodel.PopularMovieViewModel
@@ -32,15 +33,7 @@ fun HomeScreen(navController: NavController) {
     val topRatedViewModel: TopRatedMovieViewModel = hiltViewModel()
     Scaffold(
         topBar = {
-            TopAppBar(
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background,
-                    titleContentColor = MaterialTheme.colorScheme.onSurface,
-                ),
-                title = {
-                    Text("Movie App")
-                }
-            )
+            TopAppBarBase(navController= navController, title = "Movie App")
         },
     ) { padding ->
         LazyColumn(
