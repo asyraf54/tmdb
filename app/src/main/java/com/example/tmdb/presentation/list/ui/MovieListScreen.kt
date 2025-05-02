@@ -15,6 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.tmdb.core.constant.MovieType
 import com.example.tmdb.core.constant.RequestState
+import com.example.tmdb.core.navigation.Screen
 import com.example.tmdb.core.widgets.MovieCard
 import com.example.tmdb.core.widgets.TopAppBarBase
 import com.example.tmdb.presentation.list.viewmodel.MovieListViewModel
@@ -32,7 +33,7 @@ fun MovieListScreen(
     val state by viewModel.state.collectAsState()
     val movieType : MovieType = MovieType.getFromType(type)
 
-    LaunchedEffect(type) {
+    LaunchedEffect(Unit) {
         viewModel.getMovies(movieType)
     }
 
@@ -79,7 +80,8 @@ fun MovieListScreen(
                         modifier = Modifier.fillMaxSize()
                     ) {
                         items(movies) { movie ->
-                            MovieCard(movie)
+                            MovieCard(movie, onClick = { navController.navigate(Screen.Detail.createRoute(
+                               movie.id))})
                         }
                     }
                 }

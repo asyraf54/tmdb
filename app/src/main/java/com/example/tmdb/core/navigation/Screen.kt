@@ -6,4 +6,7 @@ sealed class Screen(val route: String) {
     object MovieList : Screen("list/{movieType}") {
         fun createRoute(movieType: String) = "list/$movieType"
     }
+    object Detail : Screen("detail/{movieId}") {
+        fun createRoute(movieId: Int) = "detail/$movieId"
+    }
 }

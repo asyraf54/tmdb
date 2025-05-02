@@ -31,12 +31,14 @@ fun HomeScreen(navController: NavController) {
     val nowPlayingViewModel: NowPlayingViewModel = hiltViewModel()
     val upcomingViewModel: UpcomingViewModel = hiltViewModel()
     val topRatedViewModel: TopRatedMovieViewModel = hiltViewModel()
+
     LaunchedEffect(Unit) {
         popularViewModel.getMovies(MovieType.popular)
         nowPlayingViewModel.getMovies(MovieType.nowPlaying)
         upcomingViewModel.getMovies(MovieType.upcoming)
         topRatedViewModel.getMovies(MovieType.topRated)
     }
+
     Scaffold(
         topBar = {
             TopAppBarBase(navController= navController, title = "Movie App")
@@ -93,7 +95,8 @@ fun MovieSection(movieType: MovieType, viewModel: MovieListViewModel, navControl
                 ) {
                     items(state.movies) {
                             movie ->
-                        MovieCard(movie)
+                        MovieCard(movie, onClick = {navController.navigate(Screen.Detail.createRoute(
+                            movie.id))})
                     }
                     item {
                         Box(

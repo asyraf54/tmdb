@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
+import com.example.tmdb.presentation.detail.ui.DetailScreen
 import com.example.tmdb.presentation.home.ui.HomeScreen
 import com.example.tmdb.presentation.list.ui.MovieListScreen
 import com.example.tmdb.presentation.splash.ui.SplashScreen
@@ -50,18 +51,18 @@ fun AppNavigation() {
             MovieListScreen(type = movieType, navController = navController)
         }
 
-//        composable(
-//            route = Screen.Detail.route,
-//            arguments = listOf(navArgument("itemId") { type = NavType.StringType }),
-//            deepLinks = listOf(
-//                navDeepLink {
-//                    uriPattern = "myapp://detail/{itemId}"
-//                }
-//            )
-//        ) { backStackEntry ->
-//            val itemId = backStackEntry.arguments?.getString("itemId") ?: ""
-//            DetailScreen(itemId, navController)
-//        }
+        composable(
+            route = Screen.Detail.route,
+            arguments = listOf(navArgument("movieId") { type = NavType.StringType }),
+            deepLinks = listOf(
+                navDeepLink {
+                    uriPattern = "myapp://detail/{movieId}"
+                }
+            )
+        ) { backStackEntry ->
+            val movieId = backStackEntry.arguments?.getInt("movieId") ?: 0
+            DetailScreen(movieId = movieId, navController = navController)
+        }
 
 //        composable(
 //            route = Screen.Transaction.route,
