@@ -1,6 +1,8 @@
 package com.example.tmdb.di
 
 import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerCollector
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.example.tmdb.BuildConfig
 import com.example.tmdb.core.utils.interceptor.NetworkInterceptor
 import dagger.Module
@@ -18,8 +20,15 @@ object CoreModule {
 
     @Provides
     fun provideHttpClient(@ApplicationContext context: Context): OkHttpClient {
+        val chuckerInterceptor = ChuckerInterceptor.Builder(context)
+            .collector(ChuckerCollector(context))
+            .maxContentLength(250_000L)
+            .alwaysReadResponseBody(true)
+            .build()
+
         return OkHttpClient.Builder()
             .addInterceptor(NetworkInterceptor)
+            .addInterceptor(chuckerInterceptor)
             .build()
     }
 

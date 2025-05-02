@@ -31,6 +31,12 @@ fun HomeScreen(navController: NavController) {
     val nowPlayingViewModel: NowPlayingViewModel = hiltViewModel()
     val upcomingViewModel: UpcomingViewModel = hiltViewModel()
     val topRatedViewModel: TopRatedMovieViewModel = hiltViewModel()
+    LaunchedEffect(Unit) {
+        popularViewModel.getMovies(MovieType.popular)
+        nowPlayingViewModel.getMovies(MovieType.nowPlaying)
+        upcomingViewModel.getMovies(MovieType.upcoming)
+        topRatedViewModel.getMovies(MovieType.topRated)
+    }
     Scaffold(
         topBar = {
             TopAppBarBase(navController= navController, title = "Movie App")
@@ -71,9 +77,6 @@ fun HomeScreen(navController: NavController) {
 @Composable
 fun MovieSection(movieType: MovieType, viewModel: MovieListViewModel, navController: NavController){
     val state by viewModel.state.collectAsState()
-    LaunchedEffect(movieType) {
-        viewModel.getMovies(movieType)
-    }
 
     Column {
         Text("Movie ${movieType.displayName()}")

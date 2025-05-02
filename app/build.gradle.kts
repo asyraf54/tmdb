@@ -97,6 +97,7 @@ dependencies {
     // OkHttp & Logging
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
+    implementation(libs.chucker)
 
     // Coil Async Image
     implementation(libs.coil.compose)
