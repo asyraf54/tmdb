@@ -35,7 +35,7 @@ fun AppNavigation() {
         }
 
         composable(Screen.Home.route) {
-            HomeScreen(navController)
+            HomeScreen(navController= navController)
         }
 
         composable(
@@ -60,7 +60,8 @@ fun AppNavigation() {
                 }
             )
         ) { backStackEntry ->
-            val movieId = backStackEntry.arguments?.getInt("movieId") ?: 0
+            val movieId =
+                backStackEntry.arguments?.getString("movieId")?.toIntOrNull() ?: 0
             DetailScreen(movieId = movieId, navController = navController)
         }
 

@@ -1,5 +1,8 @@
 package com.example.tmdb.presentation.list.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import com.example.tmdb.core.constant.MovieType
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -20,9 +23,18 @@ open class MovieListViewModel @Inject constructor(
     private val _state = MutableStateFlow(MovieListState())
     val state: StateFlow<MovieListState> = _state
 
+    var isInitialized by mutableStateOf(false)
+        private set
+
+    fun initialize(movieType: MovieType, page: Int = 1){
+        if(!isInitialized){
+            getMovies(movieType, page)
+        }
+    }
 
     fun getMovies(movieType: MovieType, page: Int = 1) {
         viewModelScope.launch {
+            isInitialized = true
             _state.value = _state.value.copy(
                 moviesState = _state.value.moviesState.copy(
                     requestState = RequestState.loading,

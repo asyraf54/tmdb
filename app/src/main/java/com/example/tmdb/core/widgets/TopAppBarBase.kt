@@ -14,11 +14,11 @@ import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBarBase(navController: NavController, title: String){
+fun TopAppBarBase(navController: NavController, title: String) {
     TopAppBar(
         navigationIcon = {
             if (navController.previousBackStackEntry != null) {
-                IconButton(onClick = { navController.popBackStack() }) {
+                IconButton(onClick = { if (navController.previousBackStackEntry != null) navController.popBackStack() }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Back"

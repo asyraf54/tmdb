@@ -33,10 +33,10 @@ fun HomeScreen(navController: NavController) {
     val topRatedViewModel: TopRatedMovieViewModel = hiltViewModel()
 
     LaunchedEffect(Unit) {
-        popularViewModel.getMovies(MovieType.popular)
-        nowPlayingViewModel.getMovies(MovieType.nowPlaying)
-        upcomingViewModel.getMovies(MovieType.upcoming)
-        topRatedViewModel.getMovies(MovieType.topRated)
+        popularViewModel.initialize(MovieType.popular)
+        nowPlayingViewModel.initialize(MovieType.nowPlaying)
+        upcomingViewModel.initialize(MovieType.upcoming)
+        topRatedViewModel.initialize(MovieType.topRated)
     }
 
     Scaffold(

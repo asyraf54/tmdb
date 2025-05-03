@@ -34,7 +34,7 @@ fun MovieListScreen(
     val movieType : MovieType = MovieType.getFromType(type)
 
     LaunchedEffect(Unit) {
-        viewModel.getMovies(movieType)
+        viewModel.initialize(movieType)
     }
 
     Scaffold(
