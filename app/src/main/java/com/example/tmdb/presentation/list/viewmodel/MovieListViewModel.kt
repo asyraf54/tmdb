@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.tmdb.core.base.Either
 import com.example.tmdb.core.base.Failure
 import com.example.tmdb.core.constant.RequestState
-import com.example.tmdb.domain.usecase.MovieUsecase
+import com.example.tmdb.domain.usecase.MovieUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 open class MovieListViewModel @Inject constructor(
-    private val movieUseCase: MovieUsecase
+    private val movieUseCase: MovieUseCase
 ) : ViewModel() {
     private val _state = MutableStateFlow(MovieListState())
     val state: StateFlow<MovieListState> = _state
@@ -112,21 +112,21 @@ open class MovieListViewModel @Inject constructor(
 
 @HiltViewModel
 class PopularMovieViewModel @Inject constructor(
-    private val movieUseCase: MovieUsecase
+    private val movieUseCase: MovieUseCase
 ) : MovieListViewModel(movieUseCase)
 
 @HiltViewModel
 class TopRatedMovieViewModel @Inject constructor(
-    private val movieUseCase: MovieUsecase
+    private val movieUseCase: MovieUseCase
 ) : MovieListViewModel(movieUseCase)
 
 @HiltViewModel
 class NowPlayingViewModel @Inject constructor(
-    private val movieUseCase: MovieUsecase
+    private val movieUseCase: MovieUseCase
 ) : MovieListViewModel(movieUseCase)
 
 @HiltViewModel
 class UpcomingViewModel @Inject constructor(
-    private val movieUseCase: MovieUsecase
+    private val movieUseCase: MovieUseCase
 ) : MovieListViewModel(movieUseCase)
 

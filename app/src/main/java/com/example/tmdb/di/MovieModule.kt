@@ -3,7 +3,7 @@ package com.example.tmdb.di
 import com.example.tmdb.data.repository.MovieRepositoryImpl
 import com.example.tmdb.data.source.MovieSource
 import com.example.tmdb.domain.repository.MovieRepository
-import com.example.tmdb.domain.usecase.MovieUsecase
+import com.example.tmdb.domain.usecase.MovieUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,5 +21,5 @@ object MovieModule {
     fun provideMovieRepository(movieSource: MovieSource): MovieRepository = MovieRepositoryImpl(movieSource)
 
     @Provides
-    fun provideMovieUsecase(repository: MovieRepository): MovieUsecase = MovieUsecase(repository)
+    fun provideMovieUseCase(repository: MovieRepository): MovieUseCase = MovieUseCase(repository)
 }

@@ -9,6 +9,6 @@ import retrofit2.http.Query
 interface MovieSource {
     @GET("movie/{type}")
     suspend fun getMovies(@Path("type") type: String, @Query("page") page: Int): MovieListResponse
-    @GET("movies/{id}")
+    @GET("movie/{id}")
     suspend fun getMovie(@Path("id") id: Int): MovieDetailResponse
 }

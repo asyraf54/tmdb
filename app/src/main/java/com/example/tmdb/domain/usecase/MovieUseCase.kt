@@ -6,7 +6,7 @@ import com.example.tmdb.domain.entity.Movie
 import com.example.tmdb.domain.repository.MovieRepository
 import javax.inject.Inject
 
-class MovieUsecase @Inject constructor(
+class MovieUseCase @Inject constructor(
     private val repository: MovieRepository
 ) {
     suspend fun getMovies(type: String, page: Int): Either<Failure, List<Movie>> = repository.getMovies(type, page)
