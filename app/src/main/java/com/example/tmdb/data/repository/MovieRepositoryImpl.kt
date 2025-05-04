@@ -5,6 +5,7 @@ import com.example.tmdb.core.base.Failure
 import com.example.tmdb.core.utils.mapper.mapExceptionToFailure
 import com.example.tmdb.data.source.MovieSource
 import com.example.tmdb.domain.entity.Movie
+import com.example.tmdb.domain.entity.MovieDetail
 import com.example.tmdb.domain.repository.MovieRepository
 import javax.inject.Inject
 
@@ -15,7 +16,7 @@ class MovieRepositoryImpl @Inject constructor(private val source: MovieSource) :
         Either.Left(mapExceptionToFailure(e))
     }
 
-    override suspend fun getMovie(id: Int): Either<Failure, Movie> = try {
+    override suspend fun getMovie(id: Int): Either<Failure, MovieDetail> = try {
         Either.Right(source.getMovie(id).toEntity())
     } catch (e: Exception) {
         Either.Left(mapExceptionToFailure(e))
