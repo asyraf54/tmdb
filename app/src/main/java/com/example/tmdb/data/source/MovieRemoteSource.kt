@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface MovieSource {
+interface MovieRemoteSource {
     @GET("movie/{type}")
     suspend fun getMovies(@Path("type") type: String, @Query("page") page: Int): MovieListResponse
     @GET("movie/{id}")

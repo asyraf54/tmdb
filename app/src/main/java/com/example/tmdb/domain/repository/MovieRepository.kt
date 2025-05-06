@@ -8,4 +8,6 @@ import com.example.tmdb.domain.entity.MovieDetail
 interface MovieRepository {
     suspend fun getMovies(type: String, page: Int): Either<Failure, List<Movie>>
     suspend fun getMovie(id: Int): Either<Failure, MovieDetail>
+    suspend fun getAllFavoriteMovie(): Either<Failure, List<MovieDetail>>
+    suspend fun isFavoriteMovie(movieId: Int): Either<Failure, Boolean>
 }

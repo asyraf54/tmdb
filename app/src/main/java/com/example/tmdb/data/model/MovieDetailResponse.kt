@@ -1,5 +1,7 @@
 package com.example.tmdb.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.example.tmdb.domain.entity.Genre
 import com.example.tmdb.domain.entity.MovieDetail
 import com.example.tmdb.domain.entity.ProductionCompany
@@ -8,6 +10,7 @@ import com.example.tmdb.domain.entity.SpokenLanguage
 
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "movies")
 data class MovieDetailResponse(
     val adult: Boolean? = null,
 
@@ -22,7 +25,7 @@ data class MovieDetailResponse(
     val genres: List<GenreResponse>? = null,
 
     val homepage: String? = null,
-    val id: Int? = null,
+    @PrimaryKey val id: Int,
 
     @SerializedName("imdb_id")
     val imdbId: String? = null,
@@ -66,7 +69,8 @@ data class MovieDetailResponse(
     val voteAverage: Double? = null,
 
     @SerializedName("vote_count")
-    val voteCount: Int? = null
+    val voteCount: Int? = null,
+    val isFavorite: Boolean = false
 ) {
     fun toEntity(): MovieDetail {
         return MovieDetail(
@@ -76,7 +80,7 @@ data class MovieDetailResponse(
             budget = budget ?: 0,
             genres = genres?.map { Genre(it.id, it.name.orEmpty()) } ?: emptyList(),
             homepage = homepage.orEmpty(),
-            id = id ?: 0,
+            id = id,
             imdbId = imdbId.orEmpty(),
             originCountry = originCountry ?: emptyList(),
             originalLanguage = originalLanguage.orEmpty(),
@@ -113,7 +117,7 @@ data class MovieDetailResponse(
             title = title.orEmpty(),
             video = video == true,
             voteAverage = voteAverage ?: 0.0,
-            voteCount = voteCount ?: 0
+            voteCount = voteCount ?: 0,
         )
     }
 }

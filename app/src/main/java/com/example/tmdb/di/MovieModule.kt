@@ -1,7 +1,8 @@
 package com.example.tmdb.di
 
 import com.example.tmdb.data.repository.MovieRepositoryImpl
-import com.example.tmdb.data.source.MovieSource
+import com.example.tmdb.data.source.MovieLocalSource
+import com.example.tmdb.data.source.MovieRemoteSource
 import com.example.tmdb.domain.repository.MovieRepository
 import com.example.tmdb.domain.usecase.MovieUseCase
 import dagger.Module
@@ -15,10 +16,14 @@ import retrofit2.Retrofit
 object MovieModule {
 
     @Provides
-    fun provideMovieSource(retrofit: Retrofit): MovieSource = retrofit.create(MovieSource::class.java)
+    fun provideMovieSource(retrofit: Retrofit): MovieRemoteSource =
+        retrofit.create(MovieRemoteSource::class.java)
 
     @Provides
-    fun provideMovieRepository(movieSource: MovieSource): MovieRepository = MovieRepositoryImpl(movieSource)
+    fun provideMovieRepository(
+        movieRemoteSource: MovieRemoteSource,
+        movieLocalSource: MovieLocalSource
+    ): MovieRepository = MovieRepositoryImpl(movieRemoteSource, movieLocalSource)
 
     @Provides
     fun provideMovieUseCase(repository: MovieRepository): MovieUseCase = MovieUseCase(repository)

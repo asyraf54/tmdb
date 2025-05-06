@@ -101,4 +101,8 @@ dependencies {
 
     // Coil Async Image
     implementation(libs.coil.compose)
+
+    // Room
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
 }
