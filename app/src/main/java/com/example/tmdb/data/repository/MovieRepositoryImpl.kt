@@ -3,7 +3,7 @@ package com.example.tmdb.data.repository
 import com.example.tmdb.core.base.Either
 import com.example.tmdb.core.base.Failure
 import com.example.tmdb.core.utils.mapper.mapExceptionToFailure
-import com.example.tmdb.data.model.MovieDetailResponse
+import com.example.tmdb.data.model.toDao
 import com.example.tmdb.data.source.MovieLocalSource
 import com.example.tmdb.data.source.MovieRemoteSource
 import com.example.tmdb.domain.entity.Movie
@@ -40,5 +40,21 @@ class MovieRepositoryImpl @Inject constructor(
     } catch (e: Exception) {
         Either.Left(mapExceptionToFailure(e))
     }
+
+    override suspend fun insertFavoriteMovie(movie: MovieDetail): Either<Failure, Unit> = try {
+        val result = localSource.insertFavoriteMovie(movie.toDao())
+        Either.Right(result)
+    } catch (e: Exception) {
+        Either.Left(mapExceptionToFailure(e))
+    }
+
+    override suspend fun deleteFavoriteMovie(movie: MovieDetail): Either<Failure, Unit> = try {
+        val result = localSource.deleteFavoriteMovie(movie.toDao())
+        Either.Right(result)
+    } catch (e: Exception) {
+        Either.Left(mapExceptionToFailure(e))
+    }
+
+
 
 }

@@ -1,7 +1,5 @@
 package com.example.tmdb.data.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.example.tmdb.domain.entity.Genre
 import com.example.tmdb.domain.entity.MovieDetail
 import com.example.tmdb.domain.entity.ProductionCompany
@@ -10,7 +8,6 @@ import com.example.tmdb.domain.entity.SpokenLanguage
 
 import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "movies")
 data class MovieDetailResponse(
     val adult: Boolean? = null,
 
@@ -25,7 +22,7 @@ data class MovieDetailResponse(
     val genres: List<GenreResponse>? = null,
 
     val homepage: String? = null,
-    @PrimaryKey val id: Int,
+    val id: Int,
 
     @SerializedName("imdb_id")
     val imdbId: String? = null,
@@ -121,3 +118,4 @@ data class MovieDetailResponse(
         )
     }
 }
+

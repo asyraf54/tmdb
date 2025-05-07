@@ -12,9 +12,18 @@ class MovieUseCase @Inject constructor(
 ) {
     suspend fun getMovies(type: String, page: Int): Either<Failure, List<Movie>> =
         repository.getMovies(type, page)
+
     suspend fun getMovieDetail(id: Int): Either<Failure, MovieDetail> = repository.getMovie(id)
+
     suspend fun getAllFavoriteMovie(): Either<Failure, List<MovieDetail>> =
         repository.getAllFavoriteMovie()
+
     suspend fun isFavoriteMovie(movieId: Int): Either<Failure, Boolean> =
-        repository.isFavoriteMovie(movieId=movieId)
+        repository.isFavoriteMovie(movieId = movieId)
+
+    suspend fun insertFavoriteMovie(movie: MovieDetail): Either<Failure, Unit> =
+        repository.insertFavoriteMovie(movie)
+
+    suspend fun deleteFavoriteMovie(movie: MovieDetail): Either<Failure, Unit> =
+        repository.deleteFavoriteMovie(movie)
 }

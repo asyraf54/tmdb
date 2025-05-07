@@ -10,4 +10,6 @@ interface MovieRepository {
     suspend fun getMovie(id: Int): Either<Failure, MovieDetail>
     suspend fun getAllFavoriteMovie(): Either<Failure, List<MovieDetail>>
     suspend fun isFavoriteMovie(movieId: Int): Either<Failure, Boolean>
+    suspend fun insertFavoriteMovie(movie: MovieDetail): Either<Failure, Unit>
+    suspend fun deleteFavoriteMovie(movie: MovieDetail): Either<Failure, Unit>
 }

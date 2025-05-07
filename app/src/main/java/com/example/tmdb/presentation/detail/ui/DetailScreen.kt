@@ -1,7 +1,6 @@
 package com.example.tmdb.presentation.detail.ui
 
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -45,8 +43,8 @@ import com.example.tmdb.core.constant.RequestState
 import com.example.tmdb.core.widgets.AsyncImageBase
 import com.example.tmdb.domain.entity.MovieDetail
 import com.example.tmdb.presentation.detail.viewmodel.DetailViewModel
+import com.example.tmdb.presentation.favorite.viewmodel.FavoriteViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -55,12 +53,14 @@ fun DetailScreen(movieId: Int, navController: NavController) {
     val viewModel: DetailViewModel = hiltViewModel()
     val state by viewModel.state.collectAsState()
     val scrollState = rememberScrollState()
-    var isFavorite by remember { mutableStateOf(false) }
     var debounceJob: Job? by remember { mutableStateOf(null) }
     val coroutineScope = rememberCoroutineScope()
+    val favoriteViewModel: FavoriteViewModel = hiltViewModel()
+    val favoriteState by favoriteViewModel.state.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.initialize(movieId)
+        favoriteViewModel.isFavoriteMovie(movieId)
     }
 
     Scaffold(
@@ -119,20 +119,24 @@ fun DetailScreen(movieId: Int, navController: NavController) {
 
                                 IconButton(
                                     onClick = {
-                                        isFavorite = !isFavorite
+                                        favoriteViewModel.setIsFavorite(!favoriteState.isFavorite)
                                         debounceJob?.cancel()
                                         debounceJob = coroutineScope.launch {
                                             delay(500L)
-                                            Log.d("AAA", "Do it Now $isFavorite")
+                                            if(favoriteState.isFavorite){
+                                                favoriteViewModel.insertFavoriteMovie(movie)
+                                            } else {
+                                                favoriteViewModel.deleteFavoriteMovie(movie)
+                                            }
                                         } },
                                     modifier = Modifier
                                         .align(Alignment.TopEnd)
                                         .padding(16.dp)
                                 ) {
                                     Icon(
-                                        imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                                        imageVector = if (favoriteState.isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                                         contentDescription = "Favorite",
-                                        tint = if (isFavorite) Color.Red else Color.White
+                                        tint = if (favoriteState.isFavorite) Color.Red else Color.White
                                     )
                                 }
                             }

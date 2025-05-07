@@ -17,6 +17,8 @@ import com.example.tmdb.core.constant.RequestState
 import com.example.tmdb.core.navigation.Screen
 import com.example.tmdb.core.widgets.MovieCard
 import com.example.tmdb.core.widgets.TopAppBarBase
+import com.example.tmdb.domain.entity.Movie
+import com.example.tmdb.presentation.favorite.viewmodel.FavoriteViewModel
 import com.example.tmdb.presentation.list.viewmodel.MovieListViewModel
 import com.example.tmdb.presentation.list.viewmodel.NowPlayingViewModel
 import com.example.tmdb.presentation.list.viewmodel.PopularMovieViewModel
@@ -31,12 +33,14 @@ fun HomeScreen(navController: NavController) {
     val nowPlayingViewModel: NowPlayingViewModel = hiltViewModel()
     val upcomingViewModel: UpcomingViewModel = hiltViewModel()
     val topRatedViewModel: TopRatedMovieViewModel = hiltViewModel()
+    val favoriteViewModel: FavoriteViewModel = hiltViewModel()
 
     LaunchedEffect(Unit) {
         popularViewModel.initialize(MovieType.popular)
         nowPlayingViewModel.initialize(MovieType.nowPlaying)
         upcomingViewModel.initialize(MovieType.upcoming)
         topRatedViewModel.initialize(MovieType.topRated)
+        favoriteViewModel.getAllFavoriteMovie()
     }
 
     Scaffold(
@@ -50,6 +54,13 @@ fun HomeScreen(navController: NavController) {
                 .padding(padding)
                 .padding(horizontal = 16.dp)
         ) {
+
+            item {
+                FavoriteSection(navController = navController, viewModel = favoriteViewModel)
+            }
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
             item {
                 MovieSection(movieType = MovieType.popular, navController = navController, viewModel = popularViewModel)
             }
@@ -77,7 +88,55 @@ fun HomeScreen(navController: NavController) {
 }
 
 @Composable
-fun MovieSection(movieType: MovieType, viewModel: MovieListViewModel, navController: NavController){
+fun FavoriteSection( viewModel: FavoriteViewModel, navController: NavController){
+    val state by viewModel.state.collectAsState()
+
+    when(state.getAllFavoriteMovieState.requestState){
+        RequestState.loading -> {
+            Box(Modifier.fillMaxWidth().height(200.dp), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator()
+            }
+        }
+        RequestState.success -> {
+            if(state.getAllFavoriteMovieState.data.isNotEmpty()){
+                Column {
+                    Text("Movie Favorite")
+                    Spacer(Modifier.height(12.dp))
+
+
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
+                        items(state.getAllFavoriteMovieState.data) {
+                                movie ->
+                            MovieCard(movie = Movie(
+                                id = movie.id,
+                                title = movie.title,
+                                overview = movie.overview,
+                                posterPath = movie.posterPath,
+                                backdropPath = movie.backdropPath,
+                                genreIds = listOf(),
+                                releaseDate = movie.releaseDate,
+                                voteAverage = movie.voteAverage,
+                                voteCount = movie.voteCount,
+                                popularity = movie.popularity
+                            ), onClick = {navController.navigate(Screen.Detail.createRoute(
+                                movie.id))})
+                        }
+                    }
+                }
+            }
+            else {
+                Unit
+            }
+        }
+        else -> Unit
+    }
+
+}
+
+@Composable
+fun MovieSection( movieType: MovieType, viewModel: MovieListViewModel, navController: NavController){
     val state by viewModel.state.collectAsState()
 
     Column {
@@ -119,8 +178,6 @@ fun MovieSection(movieType: MovieType, viewModel: MovieListViewModel, navControl
         }
 
     }
-
-
 }
 
 
