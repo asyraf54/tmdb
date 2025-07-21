@@ -8,8 +8,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
+import com.example.tmdb.presentation.dashboard.DashboardScreen
 import com.example.tmdb.presentation.detail.ui.DetailScreen
-import com.example.tmdb.presentation.home.ui.HomeScreen
 import com.example.tmdb.presentation.list.ui.MovieListScreen
 import com.example.tmdb.presentation.splash.ui.SplashScreen
 import kotlinx.coroutines.delay
@@ -28,14 +28,14 @@ fun AppNavigation() {
             // Auto navigate to Home after delay
             LaunchedEffect(true) {
                 delay(3000) // 2 seconds splash delay
-                navController.navigate(Screen.Home.route) {
+                navController.navigate(Screen.Dashboard.route) {
                     popUpTo(Screen.Splash.route) { inclusive = true }
                 }
             }
         }
 
-        composable(Screen.Home.route) {
-            HomeScreen(navController= navController)
+        composable(Screen.Dashboard.route) {
+            DashboardScreen(navController= navController)
         }
 
         composable(
@@ -64,23 +64,5 @@ fun AppNavigation() {
                 backStackEntry.arguments?.getString("movieId")?.toIntOrNull() ?: 0
             DetailScreen(movieId = movieId, navController = navController)
         }
-
-//        composable(
-//            route = Screen.Transaction.route,
-//            arguments = listOf(
-//                navArgument("tabIndex") {
-//                    type = NavType.IntType
-//                    defaultValue = 0
-//                }
-//            ),
-//            deepLinks = listOf(
-//                navDeepLink {
-//                    uriPattern = "myapp://transaction?tab={tabIndex}"
-//                }
-//            )
-//        ) { backStackEntry ->
-//            val tabIndex = backStackEntry.arguments?.getInt("tabIndex") ?: 0
-//            TransactionScreen(navController, initialTabIndex = tabIndex)
-//        }
     }
 }
